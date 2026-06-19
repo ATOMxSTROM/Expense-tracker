@@ -38,5 +38,14 @@ export async function updateSession(request: NextRequest) {
     return NextResponse.redirect(url);
   }
 
-  return supabaseResponse;
+  if (!data?.claims) {
+    return supabaseResponse;
+  }
+
+  // Forward the already-verified user id so Server Components can skip
+  // re-verifying the JWT with another round trip to Supabase Auth.
+  request.headers.set("x-user-id", data.claims.sub);
+  const response = NextResponse.next({ request });
+  supabaseResponse.cookies.getAll().forEach((cookie) => response.cookies.set(cookie));
+  return response;
 }

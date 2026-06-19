@@ -1,12 +1,12 @@
 import { redirect } from "next/navigation";
-import { createClient } from "@/lib/supabase/server";
+import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import type { Profile } from "@/app/generated/prisma/client";
 
 export async function getCurrentProfile(): Promise<Profile | null> {
-  const supabase = await createClient();
-  const { data } = await supabase.auth.getClaims();
-  const userId = data?.claims.sub;
+  // proxy.ts already verified the JWT and forwards the user id here,
+  // so we skip re-verifying it (one less round trip to Supabase Auth).
+  const userId = (await headers()).get("x-user-id");
   if (!userId) return null;
 
   return prisma.profile.findUnique({ where: { id: userId } });
