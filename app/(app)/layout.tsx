@@ -19,10 +19,10 @@ export default async function AppLayout({
   return (
     <div className="min-h-screen bg-slate-50">
       <header className="border-b border-slate-200 bg-white">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-8">
+        <div className="mx-auto flex max-w-6xl flex-col gap-3 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-4 sm:gap-8">
             <span className="text-sm font-semibold text-slate-900">UniqCon Tracker</span>
-            <nav className="flex gap-5">
+            <nav className="flex flex-wrap gap-4 sm:gap-5">
               {NAV_ITEMS.map((item) => (
                 <Link
                   key={item.href}
@@ -34,7 +34,7 @@ export default async function AppLayout({
               ))}
             </nav>
           </div>
-          <div className="flex items-center gap-3 text-sm text-slate-900">
+          <div className="flex flex-wrap items-center gap-3 text-sm text-slate-900">
             <span>
               {profile.name ?? profile.email} ({profile.role.toLowerCase()})
             </span>
